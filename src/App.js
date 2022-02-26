@@ -50,7 +50,7 @@ const App = () => {
       lng: longitude,
       lat: latitude
     }
-
+    const destinations = []
 
     let map = tt.map({
       key: process.env.REACT_APP_TOM_TOM_KEY,
@@ -118,10 +118,10 @@ const App = () => {
     //     })
 
 
-    const destinations = []
+
     map.on('click', (e) => {
       destinations.push(e.lngLat);
-      addDeliveryMarker()
+      addDeliveryMarker(e.lngLat, map)
     })
 
     return () => map.remove()
