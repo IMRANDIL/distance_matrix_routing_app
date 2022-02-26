@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "distance_matrix_routing_app",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "index.html"
+    }
+  ]
+}
