@@ -1,8 +1,10 @@
-
+import * as tt from '@tomtom-international/web-sdk-maps';
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
-import tt from '@tomtom-international/web-sdk-maps';
+import '@tomtom-international/web-sdk-maps/dist/maps.css'
+
+
 
 
 
@@ -21,21 +23,81 @@ const App = () => {
     let map = tt.map({
       key: process.env.REACT_APP_TOM_TOM_KEY,
       container: mapElement.current,
+      stylesVisibility: {
+        trafficIncidents: true,
+        trafficFlow: true
+      },
       center: [longitude, latitude],
-      zoom: 14
+      zoom: 9
     });
 
 
-    setMap(map)
+    setMap(map);
+
+
+
+    const addMarker = () => {
+
+      const popupOffset = {
+        bottom: [0, -25]
+      }
+
+      const popup = new tt.Popup({ offset: popupOffset }).setHTML('This is You!')
+
+
+
+
+
+      const element = document.createElement('div');
+      element.className = 'marker'
+      const marker = new tt.Marker({
+        draggable: true,
+        element: element
+      }).setLngLat([longitude, latitude]).addTo(map);
+
+      marker.on('dragend', () => {
+        const lngLat = marker.getLngLat();
+        setLongitude(lngLat.lng)
+        setLatitude(lngLat.lat)
+      })
+
+      marker.setPopup(popup).togglePopup()
+
+
+
+    }
+    addMarker()
+
+    return () => map.remove()
   }, [latitude, longitude])
 
 
 
 
   return (
-    <div className="App">
-      <div ref={mapElement} className='map'></div>
-    </div>
+    <>
+      {map &&
+        <div className="App">
+          <div ref={mapElement} className='map' />
+          <div className='searchBar'>
+            <h1>Where to?</h1>
+            <input
+              type='text'
+              id='longitude'
+              className='longitude'
+              placeholder='Put in longitude'
+              onChange={(e) => setLongitude(e.target.value)}
+            />
+            <input
+              type='text'
+              id='latitude'
+              className='latitude'
+              placeholder='Put in latitude'
+              onChange={(e) => setLatitude(e.target.value)}
+            />
+          </div>
+        </div>}
+    </>
   );
 }
 
