@@ -30,6 +30,20 @@ const App = () => {
 
 
 
+  const addDeliveryMarker = (lngLat, map) => {
+    const element = document.createElement('div');
+    element.className = 'marker-delivery'
+
+    new tt.Marker({
+      element: element
+    }).setLngLat(lngLat).addTo(map)
+  }
+
+
+
+
+
+
   useEffect(() => {
 
     const origin = {
@@ -102,6 +116,13 @@ const App = () => {
     //     return new Promise((resolve, reject) => {
     //       ttapi.services.matrixRouting(callParameters)
     //     })
+
+
+    const destinations = []
+    map.on('click', (e) => {
+      destinations.push(e.lngLat);
+      addDeliveryMarker()
+    })
 
     return () => map.remove()
   }, [latitude, longitude])
