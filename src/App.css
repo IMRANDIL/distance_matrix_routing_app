@@ -6,6 +6,7 @@ body{
 .App{
   height: 600px;
   width: 100vh;
+ 
 }
 
 .map{
@@ -29,4 +30,5 @@ body{
   background-color: red;
   width: 22px;
   height: 22px;
+  border-radius: 11px;
 }
